@@ -2,10 +2,19 @@ import asyncio
 from datetime import datetime
 from json import dumps
 from ably import AblyRealtime
+from kafka import KafkaProducer
 
+# Definir producer
+producer = KafkaProducer(
+    bootstrap_servers=['localhost:9092'],
+    value_serializer=lambda x: dumps(x).encode('utf-8')
+)
 
 async def listener(message):
-    print(message.data)
+    data = {"value": message.data, "timestamp": datetime.now().isoformat()}
+    # Enviar elemento mediante Kafka al consumer
+    producer.send('bitcoin', value=data)
+    print("Message sent: " + str(message.data) + " at " + str(datetime.now().isoformat()))
 
 
 # Creación de cliente de la API Bitcoin Pricing de Ably

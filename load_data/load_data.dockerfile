@@ -1,4 +1,3 @@
-
 #Definir archivo dockerfile para el servicio api_subscriber correspondiente a una aplicación de python
 #Se define la imagen base
 FROM python:3.7
@@ -7,13 +6,8 @@ FROM python:3.7
 WORKDIR /usr/src/app
 
 #Se copia el archivo api_subscriber.py al directorio de trabajo
-COPY ./api_subscriber/api_subscriber.py .
+COPY ./load_data/load_data.py .
 
-# Instalar ably==2.0.0b6
-RUN pip install ably==2.0.0b6
-# Instalar kafka-python
 RUN pip install kafka-python
 
-#Ejecutar el archivo api_subscriber.py
-CMD ["python", "./api_subscriber.py"]
-
+CMD ["python", "./load_data.py"]
