@@ -1,0 +1,8 @@
+version: '2'
+services:
+  api_subscriber:
+    build:
+        context: .
+        dockerfile: api_subscriber/api_subscriber.dockerfile
+    restart: always
+    network_mode: "host"
