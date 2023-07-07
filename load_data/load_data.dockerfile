@@ -9,5 +9,6 @@ WORKDIR /usr/src/app
 COPY ./load_data/load_data.py .
 
 RUN pip install kafka-python
+RUN pip install cassandra-driver
 
 CMD ["python", "./load_data.py"]
