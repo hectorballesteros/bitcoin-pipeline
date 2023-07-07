@@ -17,9 +17,18 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: "bitcoin:1:1"
+
+
     restart: always
     volumes:
      - /var/run/docker.sock:/var/run/docker.sock
+
+  cassandra:
+    image: cassandra:latest
+    ports:
+      - "9042:9042"
+    volumes:
+      - ./cassandra/data:/var/lib/cassandra/data
 
   api_subscriber:
     build:
@@ -35,6 +44,7 @@ services:
         context: .
         dockerfile: load_data/load_data.dockerfile
     depends_on:
+     - cassandra
      - kafka
      - api_subscriber
     restart: always
