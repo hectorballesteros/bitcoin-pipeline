@@ -1,0 +1,9 @@
+.Container{
+    border-radius: 40px;
+    background-color: #282c34;
+    color:aliceblue;
+    padding: 2px;
+    max-width: 500px;
+    margin: auto;
+    margin-top: 10px;
+}
