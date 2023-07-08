@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   zookeeper:
     image: wurstmeister/zookeeper:3.4.6
@@ -20,6 +20,8 @@ services:
 
 
     restart: always
+    depends_on:
+    - zookeeper
     volumes:
      - /var/run/docker.sock:/var/run/docker.sock
 
@@ -29,7 +31,8 @@ services:
       - "9042:9042"
     volumes:
       - ./cassandra/data:/var/lib/cassandra/data
-
+    restart: always
+    network_mode: "host"
   api_subscriber:
     build:
         context: .
@@ -38,14 +41,28 @@ services:
      - kafka
     restart: always
     network_mode: "host"
-
   load_data:
     build:
         context: .
         dockerfile: load_data/load_data.dockerfile
     depends_on:
-     - cassandra
      - kafka
-     - api_subscriber
+     - cassandra
     restart: always
     network_mode: "host"
+  backend:
+    build:
+        context: .
+        dockerfile: backend/backend.dockerfile
+    depends_on:
+        - cassandra
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "9042" ]
+      interval: 120s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "8000:8000"
+    restart: always
+    network_mode: "host"
+
