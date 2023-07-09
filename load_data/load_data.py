@@ -33,19 +33,20 @@ session.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (price_time TIMESTAMP 
 consumer = KafkaConsumer(
     'bitcoin',
     bootstrap_servers=['localhost:9092'],
-    auto_offset_reset='latest',
+    auto_offset_reset='earliest',
     enable_auto_commit=True,
-    group_id='my-group',
     value_deserializer=lambda x: json.loads(x.decode('utf-8'))
 )
 
+
 for message in consumer:
     data = message.value
+    print(f"Message received: {data}")
     price = data['value']
     date_send = data['timestamp']
     # Borrar microsegundos
     date_send = "'"+date_send[:16]+"+0000'"
     # Insertar datos en la tabla
-    session.execute(f"INSERT INTO {table_name} (price_time, price) VALUES ({date_send},{price})")
-    print(date_send)
+    session.execute(f"INSERT INTO {table_name} (price_time, price) VALUES ({date_send},{price}) IF NOT EXISTS")
+
 

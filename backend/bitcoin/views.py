@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import avg, col
+
+from . import models
 from .models import Bitcoin, Spark
 
 os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages com.datastax.spark:spark-cassandra-connector_2.12:3.1.0 pyspark-shell'
@@ -19,7 +21,7 @@ def get_all_bitcoin_prices(request):
 
 def get_bitcoin_prices_range(request):
     start_date = request.GET.get('start_date', datetime.strptime("1990-01-01", "%Y-%m-%d"))
-    end_date = request.GET.get('end_date', datetime.now())
+    end_date = request.GET.get('end_date', datetime.utcnow())
     print(start_date, end_date)
 
     # Obtener precios entre fechas
@@ -74,25 +76,25 @@ def bitcoin_prices_query(request):
     # Si el parametro last es pasado, se ignora el rango de fechas
     last = request.GET.get('last', None)
     if last:
-        current_date = datetime.now().date()
+        datetime.utcnow().date()
         # Establecer la fecha de inicio según la magnitud de tiempo
         if last == 'hour':
             print('hour')
-            start_date = datetime.now() - timedelta(hours=1)
+            start_date = datetime.utcnow() - timedelta(hours=1)
         elif last == 'day':
             print('day')
-            start_date = datetime.now() - timedelta(days=1)
+            start_date = datetime.utcnow() - timedelta(days=1)
         elif last == 'week':
             print('week')
-            start_date = datetime.now() - timedelta(weeks=1)
+            start_date = datetime.utcnow() - timedelta(weeks=1)
         elif last == 'month':
             print('month')
-            start_date = datetime.now() - timedelta(days=30)
+            start_date = datetime.utcnow() - timedelta(days=30)
         else:
             print('else')
-            start_date = datetime.now() - timedelta(weeks=1)
+            start_date = datetime.utcnow() - timedelta(weeks=1)
 
-    spark = Spark()
+    spark = models.Spark()
     # Obtener precios entre fechas
     spark.df = spark.get_prices_between_dates(start_date, end_date)
 

@@ -10,11 +10,12 @@ producer = KafkaProducer(
     value_serializer=lambda x: dumps(x).encode('utf-8')
 )
 
+
 async def listener(message):
-    data = {"value": message.data, "timestamp": datetime.now().isoformat()}
+    data = {"value": message.data, "timestamp": datetime.utcnow().isoformat()}
     # Enviar elemento mediante Kafka al consumer
     producer.send('bitcoin', value=data)
-    print("Message sent: " + str(message.data) + " at " + str(datetime.now().isoformat()))
+    print(f"Message sent: {data}")
 
 
 # Creación de cliente de la API Bitcoin Pricing de Ably

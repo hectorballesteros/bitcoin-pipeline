@@ -1,5 +1,5 @@
-pyspark==3.2.4
-cassandra-driver
-Django
-django-cassandra-engine
+pyspark==3.4.1
+cassandra-driver==3.28.0
+Django== 4.2.2
+django-cassandra-engine==1.8.0
 

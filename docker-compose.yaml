@@ -32,6 +32,7 @@ services:
     volumes:
      - /var/run/docker.sock:/var/run/docker.sock
 
+
   cassandra:
     image: cassandra:latest
     ports:
@@ -63,11 +64,6 @@ services:
         dockerfile: backend/backend.dockerfile
     depends_on:
         - cassandra
-    healthcheck:
-      test: [ "CMD", "nc", "-z", "localhost", "9042" ]
-      interval: 120s
-      timeout: 10s
-      retries: 5
     ports:
       - "8000:8000"
     restart: always
