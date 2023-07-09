@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import './components/Container.css';
 import LineChart from './components/LineChart';
-
+import Price from './components/Price';
+import { Stats } from './components/Stats';
 
 function App() {
   const color = '#ffffff';
@@ -15,18 +16,13 @@ function App() {
           <img src="/bitcoin_logo.png" className="BitcoinLogo" alt="Mi imagen" />
         </div>
         <div className="container Container" style={{ maxWidth: 650 }}>
-          Precio actualizado
-            <div>
-              <h1>$ 300000</h1>
-              Última actualización: <strong>hace 3 minutos</strong>
-            </div>
+          <Price></Price>
         </div>
         <div className="row justify-content-center">
-          <div className="Container col-6">
-            <LineChart className="LineChart"></LineChart>
-
+          <div className="Container col-md-6">
+            <Stats></Stats>
           </div>
-          <div className="Container col-6">
+          <div className="Container col-md-6">
             <LineChart className="LineChart"></LineChart>
           </div>
         </div>
