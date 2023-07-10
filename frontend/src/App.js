@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css';
 import './components/Container.css';
-import LineChart from './components/LineChart';
+import MyLineChart from './components/MyLineChart';
 import Price from './components/Price';
 import { Stats } from './components/Stats';
 
@@ -23,7 +23,7 @@ function App() {
             <Stats></Stats>
           </div>
           <div className="Container col-md-6">
-            <LineChart className="LineChart"></LineChart>
+            <MyLineChart className="LineChart"></MyLineChart>
           </div>
         </div>
       </div>

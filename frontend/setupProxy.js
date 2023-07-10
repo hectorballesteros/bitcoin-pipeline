@@ -1,21 +1,11 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.use(
-    '/bitcoin',
+    '/api',
     createProxyMiddleware({
-      target: 'http://20.51.222.156',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/bitcoin': '/bitcoin',
-      },
-      onProxyReq: function(proxyReq, req, res) {
-        if (req.headers.host === 'localhost:3000') {
-          res.statusCode = 403;
-          res.end('Direct requests are not allowed');
-        }
-      },
+      target: 'http://localhost:8000/', // URL del servidor de origen
+      changeOrigin: true, // Cambia el encabezado del host a la URL de destino
     })
   );
 };
-
