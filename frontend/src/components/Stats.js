@@ -5,6 +5,7 @@ import axios from 'axios';
 import "rsuite/dist/rsuite.min.css";
 import { mean, median, max, min, floor, divide } from 'mathjs';
 import { format, addDays, subDays } from 'date-fns';
+import moment from 'moment';
 
 
 
@@ -18,10 +19,10 @@ export const Stats = () => {
 
     const [buttonText, setButtonText] = useState('Histórico');
     useEffect(() => {
-        const today = new Date();
-        const dateToday = format(today, 'yyyy-MM-dd');
-        const dateTodayAux = format(addDays(today, 1), 'yyyy-MM-dd');
-        const dateWeekAgo = format(subDays(today, 7), 'yyyy-MM-dd');
+        const dateToday = moment().utc().format('YYYY-MM-DD');
+        console.log(dateToday);
+        const dateTodayAux = format(addDays(new Date(dateToday), 2), 'yyyy-MM-dd');
+        const dateWeekAgo = format(subDays(new Date(dateToday), 7), 'yyyy-MM-dd');
         if (buttonText === 'Histórico') {
             const fetchData = async () => {
                 try {
